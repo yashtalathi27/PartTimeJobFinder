@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import googleIcon from "../assets/google-icon (2).svg";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import {googleAuth} from '../utils/firebase'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,17 +11,29 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    if (localStorage.getItem("user")) navigate("/");
-  }, []);
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    localStorage.setItem("user", JSON.stringify(username));
-    setPassword("");
-    setUsername("");
-    console.log("submit");
-    navigate("/");
-  };
+  // useEffect(() => {
+  //   if (localStorage.getItem("user")) navigate("/");
+  // }, []);
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   localStorage.setItem("user", JSON.stringify(username));
+  //   setPassword("");
+  //   setUsername("");
+  //   console.log("submit");
+  //   // navigate("/");
+  // };
+
+  async function handleGoogleAuth() {
+    const google=await googleAuth()
+    // if(google){
+    //   localStorage.setItem("user", JSON.stringify(username));
+    //   setPassword("");
+    //   setUsername("");
+    //   console.log("submit");
+    //   // navigate("/");
+    // }
+    toast.sucess("Login Successfull")
+  }
   return (
     <>
       <div>
@@ -103,7 +116,9 @@ const Login = () => {
               <button
                 type="button"
                 className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200"
+                onClick={handleGoogleAuth}
               >
+
                 <img src={googleIcon} alt="Google" className="h-5" />
               </button>
             </div>
