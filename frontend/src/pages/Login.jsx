@@ -25,13 +25,9 @@ const Login = () => {
 
   async function handleGoogleAuth() {
     const google=await googleAuth()
-    // if(google){
-    //   localStorage.setItem("user", JSON.stringify(username));
-    //   setPassword("");
-    //   setUsername("");
-    //   console.log("submit");
-    //   // navigate("/");
-    // }
+    if(google){
+      navigate('/')
+    }
     toast.sucess("Login Successfull")
   }
   return (

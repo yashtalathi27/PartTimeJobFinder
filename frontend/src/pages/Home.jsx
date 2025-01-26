@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import hompageImage from "../assets/homepage.png";
 import Footer from "../components/Footer";
+import axios from 'axios'
 
 const Home = () => {
+
+  const [job,setJob]=useState({title:"",city:""})
+
+  async function reccomendJobs() {
+    const res=await axios.post('http://localhost:8001/',job,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+      }
+    }
+    )
+    if(res){
+      console.log(res);
+    }else{
+      console.log(error);      
+    }
+  }
+
+
   return (
     <div>
       <nav className="p-8 pt-0">
@@ -21,15 +41,19 @@ const Home = () => {
             <div className="mt-8 flex justify-center gap-4">
               <input
                 type="text"
+                name="title"
                 placeholder="Job title, Keyword..."
                 className="border rounded-lg px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                onChange={(e)=>(setJob({...job,title:e.target.value}))}
               />
               <input
                 type="text"
+                name="city"
                 placeholder="Location"
                 className="border rounded-lg px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                onChange={(e)=>(setJob({...job,city:e.target.value}))}
               />
-              <button className="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600">
+              <button className="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600" onClick={reccomendJobs}>
                 Find Job
               </button>
             </div>
