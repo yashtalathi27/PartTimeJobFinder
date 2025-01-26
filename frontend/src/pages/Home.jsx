@@ -3,10 +3,15 @@ import Navbar from "../components/Navbar";
 import hompageImage from "../assets/homepage.png";
 import Footer from "../components/Footer";
 import axios from 'axios'
+import {useDispatch} from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import { setRecommendationData } from "../utils/suggestionSlice";
 
 const Home = () => {
 
   const [job,setJob]=useState({title:"",city:""})
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
 
   async function reccomendJobs() {
     const res=await axios.post('http://localhost:8001/',job,
@@ -17,7 +22,10 @@ const Home = () => {
     }
     )
     if(res){
-      console.log(res);
+      console.log(res.data);
+      dispatch(setRecommendationData(res.data));
+    
+      navigate('/findjobs')
     }else{
       console.log(error);      
     }
