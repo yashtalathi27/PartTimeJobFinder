@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-
-
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import JobCard from "../components/JobCard";
 const Findjobs = () => {
   const recommendations = useSelector((state) => state.recommendation);
-  // Adjust based on your store structure
   console.log(recommendations);
-  
+
   return (
-    <div>
-      <h1>Recommended Jobs</h1>
-     
+    <div className="min-h-screen bg-gray-50 py-12">
+      <h1 className="text-center text-3xl font-bold text-gray-800">
+        Job Recommendations
+      </h1>
+      <p className="text-center text-gray-600 mt-2">
+        Explore the jobs tailored to your preferences.
+      </p>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-12">
+        {recommendations.length > 0 ? (
+          recommendations.map((job, index) => <JobCard key={index} {...job} />)
+        ) : (
+          <p className="text-center text-gray-500">
+            No recommendations available.
+          </p>
+        )}
+      </div>
     </div>
   );
 };

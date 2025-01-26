@@ -83,7 +83,6 @@ const Home = () => {
             Choose jobs from the top employers and apply for the same.
           </p>
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-12">
-            {/* Replace these divs with your actual job cards */}
             <div className="bg-white p-6 shadow rounded-lg">
               <h3 className="font-bold text-gray-800">
                 Technical Support Specialist
