@@ -4,21 +4,25 @@ import pandas as pd
 from fastapi.responses import JSONResponse
 import numpy as np
 import pandas as pd
-# import matplotlib.pyplot as plt
+
 import os
 
 data = pd.read_csv('jobs.csv')
-data = data[['jobId','title','type','category', 'tags', 'skills', 'salary.amount', 'location.city', 'location.area', 'employer.name']]
+data = data[['jobId','title','type','category', 'tags', 'skills', 'salary.amount', 'location.city', 'location.area', 'employer.name','description']]
 
 data['city'] = data['location.city']
 data['name'] = data['title']
 data['salary'] = data['salary.amount']
 data['job'] = data['type']
+data['employer.name'] = data['employer.name']
+data['description']=data['description']
+
 def convert(text):
     result = [item.strip() for item in text.replace(", and", ",").split(",")]
     return result;
 
 data['employer.name'] = data['employer.name'].apply(convert)
+data['description']=data['description'].apply(convert)
 data['category'] = data['category'].apply(convert)
 data['name'] = data['name'].apply(convert)
 data['city'] = data['city'].apply(convert)
@@ -40,6 +44,7 @@ def format(ls):
 data['tags'] = data['tags'].apply(format)
 data['skills'] = data['skills'].apply(format)
 
+
 def remove_space(word):
     l = []
     for i in word:
@@ -49,7 +54,7 @@ def remove_space(word):
 
 data['tags'] = data['tags'].apply(remove_space)
 data['skills'] = data['tags'].apply(remove_space)
-data['employer.name'] = data['employer.name'].apply(remove_space)
+# data['employer.name'] = data['employer.name'].apply(remove_space)
 data['name'] = data['name'].apply(remove_space)
 data['location.area'] = data['location.area'].apply(convert)
 data['job'] = data['job'].apply(convert)
@@ -61,9 +66,9 @@ def convert_to_list(num):
 
 data['salary'] = data['salary'].apply(convert_to_list)
 
-data['tag'] = data['city'] + data['name'] + data['job'] + data['salary'] + data['category'] + data['tags'] + data['skills'] + data['location.area'] + data['employer.name']
+data['tag'] = data['city'] + data['name'] + data['job'] + data['salary'] + data['category'] + data['tags'] + data['skills'] + data['location.area'] + data['employer.name']+data['description']
 
-new_df = data[['jobId', 'title', 'type', 'salary.amount', 'location.city', 'tag']]
+new_df = data[['jobId', 'title', 'type', 'salary.amount', 'location.city', 'tag','employer.name','description']]
 
 new_df['tag'] = new_df['tag'].apply(lambda x: " ".join(map(str, x)))
 new_df['tag'] = new_df['tag'].apply(lambda x: x.lower())
@@ -128,7 +133,9 @@ async def recommend_endpoint(req: RecommendRequest):  # Directly use the req par
             'city': [new_df.iloc[i]['location.city']],
             'type': [new_df.iloc[i]['type']],
             'salary': [new_df.iloc[i]['salary.amount']],
-            'similarity': [dist] 
+            'similarity': [dist] ,
+            'employer': [", ".join(new_df.iloc[i]['employer.name'])],
+            'description': [", ".join(new_df.iloc[i]['description'])]
         })
         rec = pd.concat([rec, row], ignore_index=True)
       
