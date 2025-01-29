@@ -10,7 +10,7 @@ async function connectML(req, res) {
     if (job) dataToSend.job = job;
 
     try {
-        const response = await axios.post('http://127.0.0.1:8000/recommends', dataToSend);
+        const response = await axios.post('http://127.0.0.1:8001/recommends', dataToSend);
         console.log(response.data);
         res.json(response.data);
     } catch (error) {
