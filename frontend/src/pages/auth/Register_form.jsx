@@ -1,6 +1,7 @@
 import React from "react";
-import Input_field from "../components/Input_field";
-import googleIcon from "../assets/google-icon (2).svg";
+import Input_field from "../../components/Others/Input_field";
+import googleIcon from "../../assets/google-icon (2).svg";
+import { Link } from "react-router-dom";
 export default function Register_form() {
   return (
     <div className=" mx-[80px]">

@@ -3,7 +3,7 @@ import recommendationReducer from './suggestionSlice'; // Path to your recommend
 
 const store = configureStore({
     reducer: {
-        recommendation: recommendationReducer, // Add the slice reducer here
+        recommendation: recommendationReducer,
     },
 });
 
