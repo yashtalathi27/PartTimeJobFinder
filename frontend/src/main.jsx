@@ -16,6 +16,7 @@ import Register_form from "./pages/auth/Register_form.jsx";
 import SelectionPage from "./pages/auth/SelectionPage.jsx";
 import UserProfile from "./pages/JobSeeker/UserProfile.jsx";
 import JobSeekerForm from "./components/auth/JobSeekerForm.jsx";
+import ChatBox from "./pages/JobRecruter/ChatBox.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
         path: "auth/signup/jobSeeker/info",
         element: <JobSeekerForm />,
       },
+      {
+        path: "chat",
+        element: <ChatBox />,
+      }
     ],
   },
 ]);
