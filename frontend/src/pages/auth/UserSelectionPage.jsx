@@ -5,7 +5,7 @@ const UserSelectionPage = () => {
   const navigate = useNavigate();
 
   const handleUserTypeSelect = (userType) => {
-    navigate("/auth/selection", { state: { userType } });
+    navigate("/auth/login", { state: { userType } });
   };
 
   return <UserTypeSelection onSelectUserType={handleUserTypeSelect} />;

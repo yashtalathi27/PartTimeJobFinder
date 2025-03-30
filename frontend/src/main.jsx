@@ -35,8 +35,8 @@ const router = createBrowserRouter([
         element: <SelectionPage />,
       },
       {
-        path: "auth/login",
-        element: <LoginPage />,
+        path: "/login",
+        element: <SelectionPage />,
       },
       {
         path: "auth/signup",
@@ -53,6 +53,18 @@ const router = createBrowserRouter([
       {
         path: "chat",
         element: <ChatBox />,
+      },
+      {
+        path: "/Findjobs",
+        element: <Findjobs />,
+      },
+      {
+        path: "/postjob",
+        element: <PostJobPage />,
+      },
+      {
+        path: "/auth/login",
+        element: <LoginPage />,
       }
     ],
   },

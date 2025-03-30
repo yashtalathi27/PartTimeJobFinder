@@ -10,20 +10,20 @@ const Navbar = () => {
       {/* Navbar */}
       <nav className="bg-white shadow-md">
         <div className="container mx-auto flex justify-between items-center p-4">
-          <div className="text-2xl font-bold text-blue-600">PartTime Pal</div>
+          <Link to="/" className="text-2xl font-bold text-blue-600">PartTime Pal</Link>
           <div className="space-x-4">
-            <button className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
+            <Link to="/Findjobs" className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
               Find Jobs
-            </button>
-            <button className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
+            </Link>
+            <Link to="/postjob" className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
               Post a Job
-            </button>
-            <button className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
+            </Link>
+            <Link to="/login" className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
               Login
-            </button>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            </Link>
+            <Link to="/auth/signup" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
               Sign Up
-            </button>
+            </Link>
           </div>
         </div>
       </nav>
