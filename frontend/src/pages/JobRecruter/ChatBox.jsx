@@ -1,97 +1,196 @@
-// import { useState } from "react";
-// import { useAuthstore } from "../../store/useauthstore";
-// import { useChatstore } from "../../store/useChatstore";
-// export default function ChatBox() {
-//   // const [messages, setMessages] = useState([
-//   //   {
-//   //     text: "Bhai vo tumhra screw driver box rakh diya table par",
-//   //     sender: "Friend",
-//   //     time: "5:01 PM",
-//   //   },
-//   //   { text: "Theek hai", sender: "You", time: "6:14 PM" },
-//   // ]);
-//   // const [input, setInput] = useState("");
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useChatstore } from "../../store/useChatstore";
+import { useAuthstore } from "../../store/useauthstore";
 
-//   // const sendMessage = () => {
-//   //   if (input.trim() === "") return;
-//   //   const newMessage = {
-//   //     text: input,
-//   //     sender: "You",
-//   //     time: new Date().toLocaleTimeString([], {
-//   //       hour: "2-digit",
-//   //       minute: "2-digit",
-//   //     }),
-//   //   };
-//   //   setMessages([...messages, newMessage]);
-//   //   setInput("");
-//   // };
-//   const { getuser, users, selectedUser, isuserloading, setSelecteduser } = useChatstore();
-//   const fetchUsers = useCallback(() => {
-//     getuser();
-//   }, [getuser]);
+export default function ChatBox() {
+  const {
+    getuser,
+    users,
+    selectedUser,
+    isuserloading,
+    setSelecteduser,
+    getmessages,
+    sendMessage,
+    messages, // ✅ Get messages directly from the store
+  } = useChatstore();
+  const { authuser } = useAuthstore();
+  const [text, setText] = useState("");
+  const messagesEndRef = useRef(null);
 
-//   useEffect(() => {
-//     fetchUsers();
-//   }, [fetchUsers]);
-//   return (
-//     <div className="flex h-screen bg-gray-900 text-white">
-//       {/* Sidebar */}
-//       <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
-//         <h2 className="text-lg font-bold mb-4">Chats</h2>
-//         <div className="p-3 bg-gray-700 rounded-md cursor-pointer">
-//           +91 91515 83099
-//         </div>
-//       </div>
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (text.trim() === "") return;
+    try {
+      await sendMessage(text); 
+      setText("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-//       {/* Chat Area */}
-//       <div className="flex flex-col flex-1">
-//         {/* Chat Header */}
-//         <div className="bg-gray-800 p-4 border-b border-gray-700 flex items-center">
-//           <span className="text-lg font-semibold">+91 91515 83099</span>
-//         </div>
+  const fetchUsers = useCallback(() => {
+    getuser();
+  }, [getuser]);
 
-//         {/* Chat Messages */}
-//         <div className="flex-1 overflow-y-auto p-4 bg-gray-900">
-//           {messages.map((msg, index) => (
-//             <div
-//               key={index}
-//               className={`flex mb-2 ${
-//                 msg.sender === "You" ? "justify-end" : "justify-start"
-//               }`}
-//             >
-//               <div
-//                 className={`p-3 max-w-xs rounded-lg text-sm shadow-md ${
-//                   msg.sender === "You"
-//                     ? "bg-green-500 text-white rounded-br-none"
-//                     : "bg-gray-700 text-white rounded-bl-none"
-//                 }`}
-//               >
-//                 {msg.text}
-//                 <div className="text-xs text-gray-300 text-right mt-1">
-//                   {msg.time}
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
-//         {/* Input Box */}
-//         <div className="flex items-center p-3 bg-gray-800 border-t border-gray-700">
-//           <input
-//             type="text"
-//             value={input}
-//             onChange={(e) => setInput(e.target.value)}
-//             placeholder="Type a message..."
-//             className="flex-1 p-2 bg-gray-700 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
-//           />
-//           <button
-//             onClick={sendMessage}
-//             className="ml-2 p-3 bg-green-500 text-white rounded-full hover:bg-green-600"
-//           >
-//             ➤
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+  useEffect(() => {
+    if (selectedUser?._id) {
+      getmessages(selectedUser._id);
+    }
+  }, [selectedUser, getmessages]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  return (
+    <div className="flex h-screen bg-gray-900 text-white">
+      {/* Sidebar */}
+      <div className="flex h-screen bg-gray-900 text-white">
+        <ul className="w-64 bg-gray-800 p-3 space-y-2 overflow-y-auto" style={{ maxHeight: "calc(100vh - 50px)" }}>
+          {users.length > 0 ? (
+            users
+              .filter((user) => user._id !== authuser._id)
+              .map((user) => (
+                <li
+                  key={user._id}
+                  onClick={() => setSelecteduser(user)}
+                  className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${
+                    selectedUser?._id === user._id
+                      ? "bg-green-600 text-white"
+                      : "bg-gray-700 hover:bg-gray-600"
+                  }`}
+                >
+                  <img
+                    src="/avatar.png"
+                    alt="User Avatar"
+                    className="rounded-full mr-3"
+                    style={{ width: "50px", height: "50px" }}
+                  />
+                  <span className="text-lg font-semibold">{user.firstname}</span>
+                </li>
+              ))
+          ) : (
+            <li className="text-gray-400 text-center py-4">
+              {isuserloading ? "Loading users..." : "No users available"}
+            </li>
+          )}
+        </ul>
+      </div>
+
+      {/* Chat Area */}
+      <div className="flex flex-col flex-1">
+        <div className="bg-gray-800 p-4 border-b border-gray-700 flex items-center">
+          <span className="text-lg font-semibold">
+            {selectedUser ? selectedUser.firstname : "Select a user to chat"}
+          </span>
+        </div>
+
+        {/* Chat Messages */}
+        <div
+          className="messages-container flex-grow-1 overflow-auto p-3"
+          style={{ maxHeight: "calc(100vh - 120px)", overflowY: "auto" }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {messages.length > 0 ? (
+              messages.map((msg, index) => (
+                <div
+                  key={index}
+                  style={{
+                    alignSelf: msg.senderid === authuser._id ? "flex-end" : "flex-start",
+                    backgroundColor: msg.senderid === authuser._id ? "#dcf8c6" : "#ffffff",
+                    padding: "10px",
+                    borderRadius: "12px",
+                    maxWidth: "60%",
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                    textAlign: "left",
+                    fontSize: "16px",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  <p style={{ margin: 0 ,color:"black"}}>{msg.text}</p>
+                  <p style={{ fontSize: "12px", color: "#555", textAlign: "right", marginTop: "5px" }}>
+                    {msg.createdAt
+                      ? new Date(msg.createdAt).toLocaleString([], {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        })
+                      : "No time"}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>No messages yet</p>
+            )}
+            <div ref={messagesEndRef}></div>
+          </div>
+        </div>
+
+        {/* Input Box */}
+        <div
+          className="message-input-container p-2 bg-white border-t"
+          style={{
+            width: "100%",
+            position: "sticky",
+            bottom: 0,
+            zIndex: 1000,
+            backgroundColor: "#fff",
+            padding: "10px",
+            borderTop: "1px solid #ddd",
+          }}
+        >
+          <form onSubmit={handleSendMessage} className="d-flex align-items-center bg-light rounded p-2" style={{ width: "100%" }}>
+            <input
+              type="text"
+              value={text}
+              placeholder="Type a message..."
+              className="form-control me-2"
+              onChange={(e) => setText(e.target.value)}
+              style={{
+                flex: 1,
+                borderRadius: "20px",
+                padding: "10px",
+                outline: "none",
+                border: "1px solid #ccc",
+                backgroundColor: "#f9f9f9",
+                color: "#333",
+                zIndex: 1001,
+              }}
+            />
+
+            <button
+              type="submit"
+              className="btn btn-primary d-flex align-items-center justify-content-center"
+              style={{
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: text.trim() ? 1 : 0.5,
+                cursor: text.trim() ? "pointer" : "not-allowed",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                zIndex: 1002,
+              }}
+              disabled={!text.trim()}
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}

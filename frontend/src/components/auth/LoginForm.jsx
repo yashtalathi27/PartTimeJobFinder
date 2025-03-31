@@ -16,7 +16,7 @@ const LoginForm = ({ userType, onBack }) => {
     
     try {
         const success=await login({ email, password }); // Wait for the login function to complete
-        console.log(authuser+"this is me")
+        console.log(authuser)
         if(authuser!=null)navigate("/"); // Navigate only if login succeeds
     } catch (error) {
         console.error("Login failed:", error);

@@ -22,7 +22,7 @@ export const useAuthstore = create((set,get) => ({
       });
 
       set({ authuser: resp.data });
-      // authuser= resp.data;
+      authuser= resp.data;
       toast.success("Account created successfully");
     //   get().connectSocket();
 
@@ -51,6 +51,8 @@ export const useAuthstore = create((set,get) => ({
         });
 
         set({ authuser: resp.data });
+      authuser= resp.data;
+
         // console.log(authuser); // Corrected console log
 
         toast.success("Logged in successfully"); // Should now work
