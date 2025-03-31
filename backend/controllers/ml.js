@@ -1,6 +1,6 @@
-const axios = require('axios');
+import axios from 'axios';
 
-async function connectML(req, res) {
+export async function connectML(req, res) {
     const { title, city, salary, job } = req.body;
 
     const dataToSend = {};
@@ -18,7 +18,3 @@ async function connectML(req, res) {
         res.status(500).json({ message: "Error fetching recommendations." });
     }
 }
-
-module.exports = {
-    connectML
-};

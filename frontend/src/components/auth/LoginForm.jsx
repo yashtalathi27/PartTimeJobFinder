@@ -3,16 +3,26 @@ import { Lock, Mail } from "lucide-react";
 import { googleAuth } from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import  googleIcon  from "../../assets/google-Icon (2).svg"; // Adjust the path as necessary
+import { useAuthstore } from "../../store/useAuthstore.js";
 
 const LoginForm = ({ userType, onBack }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
     const navigate = useNavigate();
+  const { login,authuser } = useAuthstore();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(`Logging in ${userType}:`, { email, password });
-  };
+    
+    try {
+        const success=await login({ email, password }); // Wait for the login function to complete
+        console.log(authuser+"this is me")
+        if(authuser!=null)navigate("/"); // Navigate only if login succeeds
+    } catch (error) {
+        console.error("Login failed:", error);
+    }
+};
+
 
   async function handleGoogleAuth() {
     const google = await googleAuth();

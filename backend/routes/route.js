@@ -1,7 +1,8 @@
-const express=require('express');
-const route=express.Router()
-const {connectML}=require('../controllers/ml.js');
+import express from 'express';
+import { connectML } from '../controllers/ml.js'; // Ensure the file has a .js extension
 
-route.post('/',connectML);
+const router = express.Router();
 
-module.exports=route
+router.post('/', connectML);
+
+export default router;

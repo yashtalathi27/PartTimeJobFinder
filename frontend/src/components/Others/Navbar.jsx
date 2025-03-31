@@ -21,6 +21,9 @@ const Navbar = () => {
             <Link to="/login" className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
               Login
             </Link>
+            <Link to="/chat" className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded">
+              chat
+            </Link>
             <Link to="/auth/signup" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
               Sign Up
             </Link>

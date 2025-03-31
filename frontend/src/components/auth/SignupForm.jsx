@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { Lock, Mail, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
+import { useAuthstore } from "../../store/useAuthstore.js";
+
 const SignupForm = ({ userType, onBack }) => {
+  const { signup, isSigningup } = useAuthstore();
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,8 +30,13 @@ const SignupForm = ({ userType, onBack }) => {
       alert("Passwords do not match!");
       return;
     }
+    signup({
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+      email: formData.email,
+      password: formData.password,
+    });
     navigate("jobSeeker/info");
-    console.log(`Signing up ${userType}:`, formData);
   };
 
   return (
@@ -45,11 +55,11 @@ const SignupForm = ({ userType, onBack }) => {
             <div className="relative">
               <User className="absolute left-3 top-3 text-gray-400" />
               <input
-                id="firstName"
-                name="firstName"
+                id="firstname"
+                name="firstname"
                 type="text"
                 required
-                value={formData.firstName}
+                value={formData.firstname}
                 onChange={handleChange}
                 className="appearance-none rounded-md relative block w-full px-10 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="First Name"
@@ -58,11 +68,11 @@ const SignupForm = ({ userType, onBack }) => {
             <div className="relative">
               <User className="absolute left-3 top-3 text-gray-400" />
               <input
-                id="lastName"
-                name="lastName"
+                id="lastname"
+                name="lastname"
                 type="text"
                 required
-                value={formData.lastName}
+                value={formData.lastname}
                 onChange={handleChange}
                 className="appearance-none rounded-md relative block w-full px-10 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Last Name"
