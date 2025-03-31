@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Lock, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom"; 
-import { useAuthstore } from "../../store/useAuthstore.js";
+import { useAuthstore } from "../../store/useauthstore.js";
 
 const SignupForm = ({ userType, onBack }) => {
   const { signup, isSigningup } = useAuthstore();
