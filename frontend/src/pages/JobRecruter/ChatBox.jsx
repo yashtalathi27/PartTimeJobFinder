@@ -11,6 +11,7 @@ export default function ChatBox() {
     setSelecteduser,
     getmessages,
     sendMessage,
+     listentoMessages,removeMessages,
     messages, // ✅ Get messages directly from the store
   } = useChatstore();
   const { authuser } = useAuthstore();
@@ -38,8 +39,14 @@ export default function ChatBox() {
 
   useEffect(() => {
     if (selectedUser?._id) {
+
       getmessages(selectedUser._id);
+    listentoMessages();
+
     }
+    return () => {
+      removeMessages(); // ✅ Cleanup should always run
+    };
   }, [selectedUser, getmessages]);
 
   useEffect(() => {

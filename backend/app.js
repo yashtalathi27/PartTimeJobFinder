@@ -5,8 +5,9 @@ import route from './routes/route.js';
 import authroutes from './routes/authroutes.js';
 import { connectdb } from "./lib/db.js";
 import messageroutes from "./routes/messageroutes.js"
+import {app,server} from "./lib/socketio.js"
 
-const app = express();
+// const app = express();
 
 // ✅ Fix: Proper CORS Configuration
 app.use(cors({
@@ -34,7 +35,7 @@ const PORT = 8001;
 
 // ✅ Ensure DB Connection Before Starting Server
 connectdb().then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`✅ Server running on http://localhost:${PORT}`);
     });
 }).catch(error => {

@@ -1,6 +1,6 @@
 import User from "../database/user.model.js";
 import Message from "../database/message.model.js"
-// import {getRecieverSocketId,io} from "../lib/socketio.js"
+import {getRecieverSocketId,io} from "../lib/socketio.js"
 export const getusersforsidebars=async(req,res)=>{
     try{
         const userid=req.uid;
@@ -53,12 +53,12 @@ export const sendmessage = async (req, res) => {
 
         await newmessage.save();
 
-        // const recieverSocketId = getRecieverSocketId(recieverid);
+        const recieverSocketId = getRecieverSocketId(recieverid);
         console.log("New message saved:", newmessage);
 
-        // if (recieverSocketId) {
-        //     io.to(recieverSocketId).emit("newMessage", newmessage);
-        // }
+        if (recieverSocketId) {
+            io.to(recieverSocketId).emit("newMessage", newmessage);
+        }
 
         res.status(201).json(newmessage);
     } catch (err) {
