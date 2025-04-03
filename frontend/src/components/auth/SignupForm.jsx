@@ -35,6 +35,7 @@ const SignupForm = ({ userType, onBack }) => {
       lastname: formData.lastname,
       email: formData.email,
       password: formData.password,
+      // type:
     });
     navigate("jobSeeker/info");
   };

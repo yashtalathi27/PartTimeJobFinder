@@ -5,6 +5,8 @@ import route from './routes/route.js';
 import authroutes from './routes/authroutes.js';
 import { connectdb } from "./lib/db.js";
 import messageroutes from "./routes/messageroutes.js"
+import postjobroutes from "./routes/postjobroutes.js"
+
 import {app,server} from "./lib/socketio.js"
 
 // const app = express();
@@ -29,6 +31,8 @@ app.options("*", cors());
 app.use('/', route);
 app.use("/api/auth", authroutes);
 app.use("/api/message", messageroutes);
+app.use("/api/postjob", postjobroutes);
+
 
 
 const PORT = 8001;
